@@ -1,71 +1,196 @@
-// Smooth fade-in animation on scroll
+// ===============================
+// Typing Animation
+// ===============================
 
-const sections = document.querySelectorAll("section");
+const typingText = document.querySelector(".typing-text");
 
-const observer = new IntersectionObserver((entries) => {
-    entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-            entry.target.style.opacity = "1";
-            entry.target.style.transform = "translateY(0)";
+const words = [
+  "Python Developer",
+  "B.Tech IT Student",
+  "Machine Learning Enthusiast",
+  "Web Learner"
+];
+
+let wordIndex = 0;
+let charIndex = 0;
+let deleting = false;
+
+function typeEffect() {
+
+    const currentWord = words[wordIndex];
+
+    if(!deleting){
+
+        typingText.textContent =
+        currentWord.substring(0,charIndex++);
+
+        if(charIndex > currentWord.length){
+
+            deleting = true;
+
+            setTimeout(typeEffect,1200);
+
+            return;
+
         }
-    });
-}, {
-    threshold: 0.2
-});
 
-sections.forEach((section) => {
-    section.style.opacity = "0";
-    section.style.transform = "translateY(60px)";
-    section.style.transition = "all 0.8s ease";
-    observer.observe(section);
-});
-
-// Typing Effect
-
-const text = "Python Developer";
-const target = document.querySelector(".hero h2");
-
-let index = 0;
-
-function typing() {
-
-    if (index < text.length) {
-        target.innerHTML += text.charAt(index);
-        index++;
-        setTimeout(typing, 120);
     }
+
+    else{
+
+        typingText.textContent =
+        currentWord.substring(0,charIndex--);
+
+        if(charIndex < 0){
+
+            deleting = false;
+
+            wordIndex++;
+
+            if(wordIndex >= words.length){
+
+                wordIndex = 0;
+
+            }
+
+        }
+
+    }
+
+    setTimeout(typeEffect,deleting ? 60 : 120);
+
 }
 
-target.innerHTML = "";
-typing();
+typeEffect();
 
 
-// Active Navbar Link
+// ===============================
+// Scroll Reveal Animation
+// ===============================
 
-const navLinks = document.querySelectorAll("nav a");
+const sections =
+document.querySelectorAll("section");
 
-window.addEventListener("scroll", () => {
+const observer =
+new IntersectionObserver((entries)=>{
 
-    let current = "";
+entries.forEach(entry=>{
 
-    sections.forEach((section) => {
+if(entry.isIntersecting){
 
-        const sectionTop = section.offsetTop - 150;
+entry.target.classList.add("show");
 
-        if (pageYOffset >= sectionTop) {
-            current = section.getAttribute("id");
-        }
-
-    });
-
-    navLinks.forEach((link) => {
-
-        link.classList.remove("active");
-
-        if (link.getAttribute("href") === "#" + current) {
-            link.classList.add("active");
-        }
-
-    });
+}
 
 });
+
+},
+{
+threshold:0.2
+});
+
+sections.forEach(section=>{
+
+observer.observe(section);
+
+});
+
+
+// ===============================
+// Active Navbar
+// ===============================
+
+const navLinks =
+document.querySelectorAll(".navbar a");
+
+window.addEventListener("scroll",()=>{
+
+let current="";
+
+sections.forEach(section=>{
+
+const sectionTop=
+section.offsetTop-120;
+
+if(pageYOffset>=sectionTop){
+
+current=section.getAttribute("id");
+
+}
+
+});
+
+navLinks.forEach(link=>{
+
+link.classList.remove("active");
+
+if(link.getAttribute("href")==="#" + current){
+
+link.classList.add("active");
+
+}
+
+});
+
+});
+
+
+// ===============================
+// Header Background Change
+// ===============================
+
+window.addEventListener("scroll",()=>{
+
+const header=
+document.querySelector(".header");
+
+if(window.scrollY>80){
+
+header.style.background="#161b22";
+
+}
+
+else{
+
+header.style.background="rgba(13,17,23,.9)";
+
+}
+
+});
+
+
+// ===============================
+// Button Hover Animation
+// ===============================
+
+const buttons =
+document.querySelectorAll(".btn,.certificate-btn");
+
+buttons.forEach(btn=>{
+
+btn.addEventListener("mouseenter",()=>{
+
+btn.style.transform="scale(1.05)";
+
+});
+
+btn.addEventListener("mouseleave",()=>{
+
+btn.style.transform="scale(1)";
+
+});
+
+});
+
+
+// ===============================
+// Welcome Message
+// ===============================
+
+window.onload=()=>{
+
+console.log(
+"Welcome to Pushpendra Kumar Patel Portfolio"
+);
+
+};
